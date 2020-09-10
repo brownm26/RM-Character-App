@@ -24,8 +24,8 @@ class CharactersFragment : Fragment() {
 
     private val viewModel: CharactersViewModel by viewModels()
 
-    private val mAdapter = TextListAdapter {
-        val characterId = (it as TextIdItem).id
+    private val mAdapter = CharacterListAdapter {
+        val characterId = it.id
         Timber.d("Character id: $id")
 
         val character = viewModel.characters[characterId]
@@ -62,7 +62,7 @@ class CharactersFragment : Fragment() {
     }
 
     private fun updateList() {
-        mAdapter.items = viewModel.characters.map { TextIdItem(it.key, it.value.name) }
+        mAdapter.items = viewModel.characters.map { CharacterItem(it.key, it.value.image, it.value.name, it.value.status, it.value.species) }
     }
 
     override fun onStart() {
