@@ -1,5 +1,7 @@
 package com.mbrown.myapplication
 
+import java.net.URI
+
 object Model {
     data class Response(val info: Info, val results: List<Character>)
 
@@ -18,7 +20,7 @@ object Model {
                          val url: String,
                          val created: String)
 
-    data class Location(val name: String, val url: String)
+    data class Location(val name: String, val url: URI)
 
     data class DetailedLocation(val id: Long,
                                 val name: String,
