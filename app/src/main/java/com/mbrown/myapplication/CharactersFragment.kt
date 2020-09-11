@@ -1,5 +1,6 @@
 package com.mbrown.myapplication
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mbrown.myapplication.databinding.FragmentCharactersBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -50,19 +52,44 @@ class CharactersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.characterList.apply {
-            adapter = mAdapter
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        }
-
+        setupList()
         if(viewModel.characters.isNotEmpty()) {
             updateList()
         }
     }
 
+    private fun getOrientation() : Int =
+        activity?.resources?.configuration?.orientation ?: Configuration.ORIENTATION_UNDEFINED
+
+    private fun setupList() {
+        val columns = calculateColumns()
+        val layout = if(getOrientation() == Configuration.ORIENTATION_LANDSCAPE && columns > 1) {
+            GridLayoutManager(context, columns)
+        }
+        else {
+            binding.characterList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            LinearLayoutManager(context)
+        }
+
+        binding.characterList.apply {
+            adapter = mAdapter
+            layoutManager = layout
+        }
+    }
+
     private fun updateList() {
         mAdapter.items = viewModel.characters.map { CharacterItem(it.key, it.value.image, it.value.name, it.value.status, it.value.species) }
+    }
+
+    private fun calculateColumns(): Int {
+        val columns = activity?.let { context ->
+            val metrics =  context.resources.displayMetrics
+            val viewWidth = (metrics.widthPixels / metrics.density) - 16 // Screen width - list margin
+            val itemWidth = resources.getDimension(R.dimen.directory_list_item_width) / metrics.density
+            (viewWidth / itemWidth).toInt()
+        } ?: 1
+
+        return if (columns > 0) columns else 1
     }
 
     override fun onStart() {
