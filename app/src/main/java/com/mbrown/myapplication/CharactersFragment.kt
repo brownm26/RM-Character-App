@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mbrown.myapplication.databinding.FragmentCharactersBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -75,6 +76,19 @@ class CharactersFragment : Fragment() {
             adapter = mAdapter
             layoutManager = layout
         }
+
+        binding.characterList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                // Check if the view is scrolled to the bottom
+                if(!recyclerView.canScrollVertically(1)) {
+                    Timber.d("Scrolled to bottom")
+                    if(!viewModel.loading && viewModel.nextPage != null) {
+                        fetchCharacters(viewModel.nextPage)
+                    }
+                }
+            }
+        })
     }
 
     private fun updateList() {
@@ -101,13 +115,19 @@ class CharactersFragment : Fragment() {
         }
     }
 
-    private fun fetchCharacters() {
-        subscriptions?.add(RickAndMortyService.rmService.getCharacters()
+    private fun fetchCharacters(page: Long? = null) {
+        viewModel.loading = true
+        subscriptions?.add(RickAndMortyService.rmService.getCharacters(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 Timber.d(result.toString())
+
+                viewModel.nextPage = result.info.next?.let { next ->
+                    next.substring(next.lastIndexOf('=') + 1).toLongOrNull()
+                }
                 viewModel.characters.putAll(result.results.map { it.id to it }.toMap())
+                viewModel.loading = false
                 updateList()
             }, { error -> error.printStackTrace() })
         )

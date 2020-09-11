@@ -6,6 +6,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RickAndMortyService {
     companion object {
@@ -30,7 +31,7 @@ interface RickAndMortyService {
     }
 
     @GET("character")
-    fun getCharacters() : Observable<Model.Response>
+    fun getCharacters(@Query("page") page: Long? = null) : Observable<Model.Response>
 
     @GET("location/{id}")
     fun getLocation(@Path("id") locationId: Long): Observable<Model.DetailedLocation>
