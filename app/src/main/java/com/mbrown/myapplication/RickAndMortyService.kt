@@ -1,8 +1,6 @@
 package com.mbrown.myapplication
 
-import io.reactivex.rxjava3.core.Observable
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,9 +15,6 @@ interface RickAndMortyService {
         private fun create(): RickAndMortyService {
 
             val retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(
-                    RxJava3CallAdapterFactory.create()
-                )
                 .addConverterFactory(
                     GsonConverterFactory.create()
                 )
@@ -31,8 +26,8 @@ interface RickAndMortyService {
     }
 
     @GET("character")
-    fun getCharacters(@Query("page") page: Long? = null) : Observable<Model.Response>
+    suspend fun getCharacters(@Query("page") page: Long? = null) : Model.Response
 
     @GET("location/{id}")
-    fun getLocation(@Path("id") locationId: Long): Observable<Model.DetailedLocation>
+    suspend fun getLocation(@Path("id") locationId: Long): Model.DetailedLocation
 }

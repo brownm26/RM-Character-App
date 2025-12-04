@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.androidx.navigation.safeargs.kotlin)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -35,7 +36,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
 }
 
@@ -43,21 +44,23 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.google.material)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.cardview)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.material3.adaptive.navigation3)
     implementation(libs.squareup.retrofit)
-    implementation(libs.squareup.adapter.rxjava3)
     implementation(libs.squareup.converter.gson)
-    implementation(libs.reactivex.rxandroid)
     implementation(libs.jakewharton.timber)
-    implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.github.glide)
-    annotationProcessor(libs.github.glide.compiler)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.coil.compose)
     testImplementation(libs.junit)
+    debugImplementation(libs.androidx.ui.tooling)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
