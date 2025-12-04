@@ -1,4 +1,4 @@
-package com.mbrown.myapplication.characterDetail
+package com.mbrown.myapplication.presentation.characterDetail
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.mbrown.myapplication.Model
-import com.mbrown.myapplication.RickAndMortyService
+import com.mbrown.myapplication.api.RickAndMortyService
+import com.mbrown.myapplication.api.models.DetailedLocation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -18,7 +18,7 @@ import timber.log.Timber
 
 class CharacterDetailViewModel(val locationId: Long) : ViewModel() {
 
-    private val _location = MutableStateFlow<Model.DetailedLocation?>(null)
+    private val _location = MutableStateFlow<DetailedLocation?>(null)
     val location = _location
         .onStart { fetchData() }
         .stateIn(

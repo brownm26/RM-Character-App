@@ -1,4 +1,4 @@
-package com.mbrown.myapplication
+package com.mbrown.myapplication.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

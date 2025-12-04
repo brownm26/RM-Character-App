@@ -1,4 +1,4 @@
-package com.mbrown.myapplication.characterList
+package com.mbrown.myapplication.presentation.characterList
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.mbrown.myapplication.Model
+import com.mbrown.myapplication.api.models.Character
+import com.mbrown.myapplication.api.models.Location
 import com.mbrown.myapplication.composables.DebugPlaceholder
 import com.mbrown.myapplication.composables.ThemedPreview
 import com.mbrown.myapplication.composables.debugPlaceholder
@@ -36,7 +37,7 @@ import java.net.URI
 fun CharacterListScreen(
     modifier: Modifier = Modifier,
     viewModel: CharacterListViewModel = viewModel(),
-    onCharacterClicked: (Model.Character) -> Unit
+    onCharacterClicked: (Character) -> Unit
 ) {
     val characters by viewModel.characters.collectAsStateWithLifecycle()
     CharacterListScreenContent(
@@ -51,11 +52,11 @@ fun CharacterListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CharacterListScreenContent(
-    characters: List<Model.Character>,
+    characters: List<Character>,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     onScrolledToBottom: () -> Unit,
-    onCharacterClicked: (Model.Character) -> Unit
+    onCharacterClicked: (Character) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -161,18 +162,18 @@ private fun CharacterListItemPreview() {
 @Composable
 private fun CharacterListScreenPreview() {
     val characters = listOf(
-        Model.Character(
+        Character(
             id = 1,
             name = "Rick Sanchez",
             status = "Alive",
             species = "Human",
             type = "",
             gender = "Male",
-            origin = Model.Location(
+            origin = Location(
                 name = "Earth (C-137)",
                 url = URI.create("https://rickandmortyapi.com/api/location/1")
             ),
-            location = Model.Location(
+            location = Location(
                 name = "Earth (Replacement Dimension)",
                 url = URI.create("https://rickandmortyapi.com/api/location/1")
             ),

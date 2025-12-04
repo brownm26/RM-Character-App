@@ -1,12 +1,12 @@
-package com.mbrown.myapplication.characterList
+package com.mbrown.myapplication.presentation.characterList
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mbrown.myapplication.Model
-import com.mbrown.myapplication.RickAndMortyService
+import com.mbrown.myapplication.api.RickAndMortyService
+import com.mbrown.myapplication.api.models.Character
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class CharacterListViewModel : ViewModel() {
-    private val _characters = MutableStateFlow<List<Model.Character>>(emptyList())
+    private val _characters = MutableStateFlow<List<Character>>(emptyList())
     val characters = _characters
         .onStart { fetchCharacters() }
         .stateIn(

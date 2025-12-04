@@ -1,4 +1,4 @@
-package com.mbrown.myapplication
+package com.mbrown.myapplication.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -7,8 +7,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.mbrown.myapplication.characterDetail.CharacterDetailScreen
-import com.mbrown.myapplication.characterList.CharacterListScreen
+import com.mbrown.myapplication.presentation.characterDetail.CharacterDetailScreen
+import com.mbrown.myapplication.presentation.characterList.CharacterListScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
